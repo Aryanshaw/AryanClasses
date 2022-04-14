@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1046515019083",
+    "project_id": "aryanclasses-5bc1d",
+    "storage_bucket": "aryanclasses-5bc1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046515019083:android:38a48b4a298280cd994cce",
+        "android_client_info": {
+          "package_name": "com.aryanclasses"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046515019083-2ke8pc0qdvbqm5h3u2jgujhgg6otdh1q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARvkv0TvB3bMI0Ij6ZQZICmgwkTB9WSZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046515019083-2ke8pc0qdvbqm5h3u2jgujhgg6otdh1q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
