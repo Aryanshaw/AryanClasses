@@ -12,13 +12,16 @@ import {
   ToastAndroid,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import {TextInput} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {GoogleSignIn , statusCodes} from "@react-native-google-signin/google-signin"
-import PushNotification from "react-native-push-notification";
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import PushNotification from 'react-native-push-notification';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -28,96 +31,83 @@ const Login = ({navigation}) => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        ToastAndroid.show("Login successful" , ToastAndroid.SHORT) , navigation.navigate("Home") , createChannel()
+        ToastAndroid.show('Login successful', ToastAndroid.SHORT),
+          navigation.navigate('Home'),
+          createChannel();
       })
       .catch(e => {
-        if(e.code === 'auth/email-already-in-use'){
-        ToastAndroid.show('That email already exists',ToastAndroid.SHORT);
-      //  Alert.alert("This email already exists")
+        if (e.code === 'auth/email-already-in-use') {
+          ToastAndroid.show('That email already exists', ToastAndroid.SHORT);
+          //  Alert.alert("This email already exists")
         }
-        if(e.code === 'auth/invalid-email'){
-         ToastAndroid.show('That email is invalid',ToastAndroid.SHORT);
-        //  Alert.alert("This email is invalid")
- 
+        if (e.code === 'auth/invalid-email') {
+          ToastAndroid.show('That email is invalid', ToastAndroid.SHORT);
+          //  Alert.alert("This email is invalid")
         }
-        
-      //  console.log(e)
-      ToastAndroid.show("error"+e,ToastAndroid.SHORT)
-      // Alert.alert(e)
-    })
-       
+
+        //  console.log(e)
+        ToastAndroid.show('error' + e, ToastAndroid.SHORT);
+        // Alert.alert(e)
+      });
   };
 
+  const createChannel = () => {
+    PushNotification.createChannel({
+      channelId: 'test-channel',
+      channelName: 'test-channel',
+    });
+  };
 
-  const createChannel =()=>{
-    PushNotification.createChannel(
-      {
-        channelId:"test-channel",
-        channelName:"test-channel"
-      }
-    )
-  }
+  const handelNotification = () => {
+    PushNotification.localNotification({
+      channelId: 'test-channel',
+      title: 'Login Successful ' + email,
+      message: "Thank you for joining Aryan Classes you won't be disappointed",
+    });
 
-const handelNotification =()=>{
-  PushNotification.localNotification({
-    channelId:"test-channel",
-    title:"Login Successful " + email,
-    message:"Thank you for joining Aryan Classes you won't be disappointed"
-  })
+    PushNotification.localNotificationSchedule({
+      channelId: 'test-channel',
+      title: 'Miss me?',
+      message: 'You missed your classes today',
+      date: new Date(Date.now() + 20 * 1000),
+      allowWhileIdle: true,
+    });
+  };
 
-  PushNotification.localNotificationSchedule({
-    channelId:"test-channel",
-    title:"Miss me?",
-    message:"You missed your classes today",
-    date: new Date(Date.now()+20*1000),
-    allowWhileIdle:true,
-  })
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '1046515019083-2ke8pc0qdvbqm5h3u2jgujhgg6otdh1q.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+    });
+  }, []);
+  // const component=()=>{
+  // }
+  const signInWithGoogle = async () => {
+    try {
+      const {idToken} = await GoogleSignin.signIn();
 
-}
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-  const component=()=>{
-  GoogleSignIn.configure({
-    webClientId: "1046515019083-2ke8pc0qdvbqm5h3u2jgujhgg6otdh1q.apps.googleusercontent.com", // client ID of type WEB for your server (needed to verify user ID and offline access)
-
-  });
-}
-  const signInWithGoogle = async() => {
-
-
-    try{
-       await GoogleSignIn.hasPlayServices();
-      const userInfo = await GoogleSignIn.signIn();
-     const googleCredential= auth.GoogleAuthProvider.credential(userInfo);
-
-     auth().signInWithCredential(googleCredential).then(() => {
-       console.log("successfully logged in")
-       navigation.navigate("Home")
-     })
-
-      console.log("userInfo", userInfo);
-      
-  
-    }catch(e){
-
-      if(e.code===statusCodes.SIGN_IN_CANCELLED){
-        ToastAndroid.show(e,ToastAndroid.SHORT)
-      }
-      if(e.code===statusCodes.IN_PROGRESS){
+      // Sign-in the user with the credential
+      await auth()
+        .signInWithCredential(googleCredential)
+        .then(() => ToastAndroid.show("Login succesful", ToastAndroid.SHORT), navigation.navigate("Home"),console.log(idToken));
         
-        ToastAndroid.show(e,ToastAndroid.SHORT)
-
+    } catch (e) {
+      if (e.code === statusCodes.SIGN_IN_CANCELLED) {
+        ToastAndroid.show('error' + e, ToastAndroid.SHORT);
       }
-      if(e.code===statusCodes.PLAY_SERVICES_NOT_AVAILABLE){
-        ToastAndroid.show(e,ToastAndroid.SHORT)
-
+      if (e.code === statusCodes.IN_PROGRESS) {
+        ToastAndroid.show('error' + e, ToastAndroid.SHORT);
       }
-      ToastAndroid.show("error"+e,ToastAndroid.SHORT)
-      console.log(e)
-
-
+      if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        ToastAndroid.show('error' + e, ToastAndroid.SHORT);
+      }
+      ToastAndroid.show('error' + e, ToastAndroid.SHORT);
+      console.log(e);
     }
-
-  }
+  };
 
   const Signin = () => {
     if (email === '' || password === '') {
@@ -125,7 +115,7 @@ const handelNotification =()=>{
     } else {
       console.log(email, password);
       signin();
-      createChannel()
+      createChannel();
       handelNotification();
     }
   };
@@ -170,7 +160,9 @@ const handelNotification =()=>{
 
       <View style={{display: 'flex', flexDirection: 'column', padding: 15}}>
         <View>
-          <TouchableOpacity style={styles.google} onPress={()=>signInWithGoogle()}>
+          <TouchableOpacity
+            style={styles.google}
+            onPress={() => signInWithGoogle()}>
             <Icons name="google" size={25} style={{flexDirection: 'row'}} />
 
             <Text style={styles.btnText1}>Sign in with Google</Text>
@@ -254,7 +246,6 @@ const styles = StyleSheet.create({
   inputStyle: {
     paddingHorizontal: 15,
     // fontTransform:"lowercase",
-
   },
   multilineStyle: {
     paddingVertical: 4,
