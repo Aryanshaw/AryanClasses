@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1046515019083-o9d3on6a4po4j2dv4b0v0f9u8cj5blmu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aryanclasses",
+            "certificate_hash": "9efebb1bbaf0cf2e6efb66744f67c4e99c03786a"
+          }
+        },
+        {
           "client_id": "1046515019083-2ke8pc0qdvbqm5h3u2jgujhgg6otdh1q.apps.googleusercontent.com",
           "client_type": 3
         }

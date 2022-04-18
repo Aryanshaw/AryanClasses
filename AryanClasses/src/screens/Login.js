@@ -84,16 +84,24 @@ const Login = ({navigation}) => {
   // }
   const signInWithGoogle = async () => {
     try {
+      // await GoogleSignin.hasPlayServices();
+      // const userInfo = await GoogleSignin.signIn();
+      // const googleCredentials = auth.GoogleAuthProvider.credential(userInfo);
+      // await auth().signInWithCredential(googleCredentials).then(()=>console.log("hello"))
+      // console.log(userInfo);
+
       const {idToken} = await GoogleSignin.signIn();
+      const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
 
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      const user = auth().signInWithCredential(googleCredentials);
 
-      // Sign-in the user with the credential
-      await auth()
-        .signInWithCredential(googleCredential)
-        .then(() => ToastAndroid.show("Login succesful", ToastAndroid.SHORT), navigation.navigate("Home"),console.log(idToken));
-        
+      user.then((userInfo) => {
+        console.log(userInfo);
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+
     } catch (e) {
       if (e.code === statusCodes.SIGN_IN_CANCELLED) {
         ToastAndroid.show('error' + e, ToastAndroid.SHORT);
