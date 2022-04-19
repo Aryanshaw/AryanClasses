@@ -32,8 +32,9 @@ const Login = ({navigation}) => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         ToastAndroid.show('Login successful', ToastAndroid.SHORT),
-          navigation.navigate('Home'),
+          navigation.replace('profile'),
           createChannel();
+          handelNotification();
       })
       .catch(e => {
         if (e.code === 'auth/email-already-in-use') {
@@ -82,6 +83,9 @@ const Login = ({navigation}) => {
   }, []);
   // const component=()=>{
   // }
+
+  // this function is not ready yet
+
   const signInWithGoogle = async () => {
     try {
       // await GoogleSignin.hasPlayServices();
@@ -123,8 +127,7 @@ const Login = ({navigation}) => {
     } else {
       console.log(email, password);
       signin();
-      createChannel();
-      handelNotification();
+      
     }
   };
 

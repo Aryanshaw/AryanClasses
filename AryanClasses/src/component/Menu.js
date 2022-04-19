@@ -3,8 +3,27 @@
 import {useNavigation} from "@react-navigation/native";
 import React from 'react';
 import { View , TouchableOpacity,Text , StyleSheet,Image} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+// This import loads the firebase namespace.
+import firebase from 'firebase/app';
+
+// These imports load individual services into the firebase namespace.
+import 'firebase/auth';
+import 'firebase/database';
+
+
 
 const Menu = () =>{
+ 
+  const loggedIn =()=>{
+    if(auth().currentUser!=null){
+       navigation.navigate('profile')
+    }else{
+        navigation.navigate('Login')
+    }
+  }
 
     const navigation = useNavigation();
 
@@ -44,7 +63,7 @@ const Menu = () =>{
 
           <TouchableOpacity
            style={styles.btnstyle}
-           onPress={() => navigation.navigate('Login')}
+           onPress={() => loggedIn()}
           >
               <Image 
             style={styles.iconStyle}

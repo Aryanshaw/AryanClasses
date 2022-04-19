@@ -31,7 +31,7 @@ const Contact = ({navigation}) => {
   const [loader,setLoader] = useState(false);
 
 
-  const createId =  ()=>{
+   const createId =  ()=>{
     auth().createUserWithEmailAndPassword(email,password)
     .then(()=>{
       let uid =  auth().currentUser.uid;
@@ -41,7 +41,7 @@ const Contact = ({navigation}) => {
           email:email,
           phone:phone,
           password:password,
-        }).then(()=>ToastAndroid.show('account created', ToastAndroid.SHORT),setLoader(true), navigation.navigate("Home"))
+        }).then(()=>ToastAndroid.show('account created', ToastAndroid.SHORT),setLoader(true), navigation.replace("profile"))
         .catch(e=>console.log(e))
     })
     .catch(e => {

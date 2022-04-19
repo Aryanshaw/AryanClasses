@@ -10,7 +10,8 @@ import UserData from './src/screens/UserData';
 import Course from './src/screens/Course';
 import AppLoader from './src/screens/Apploader';
 import SplashScreen from './src/screens/SplashScreen';
-import Login from './src/screens/Login'
+import Login from './src/screens/Login';
+import Profile from './src/screens/Profile';
 
 // import {
 
@@ -69,7 +70,6 @@ const App = () => {
             name="splashscreen"
             component={SplashScreen}
             options={{headerShown: false}}
-            
           />
 
           <Stack.Screen
@@ -93,8 +93,8 @@ const App = () => {
             }}
           />
           <Stack.Screen
-            name="apploader"
-            component={AppLoader}
+            name="profile"
+            component={Profile}
             options={{
               headerTitleStyle: {
                 fontSize: 25,
